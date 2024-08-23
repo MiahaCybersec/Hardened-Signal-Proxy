@@ -1,0 +1,23 @@
+services:
+  caddy-signal-proxy:
+    build: ./
+    image: caddy-signal-proxy
+    ports:
+      - "80:80"
+      - "443:443"
+    restart: unless-stopped
+    volumes:
+      - ./config/caddy.json:/etc/caddy/caddy.json:ro,Z
+      - caddy_data:/data:Z
+      - caddy_config:/config:ro,Z
+    security_opt:
+      - no-new-privileges:true
+    cap_add:
+      - SETUID
+      - SETGID
+    command: run --config /etc/caddy/caddy.json
+
+volumes:
+  caddy_data:
+    external:  true
+  caddy_config:
