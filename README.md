@@ -1,29 +1,26 @@
-# Signal TLS Proxy
+# Hardened Signal Proxy
 
-To run a Signal TLS proxy, you will need a host that has ports 80 and 443 available and a domain name that points to that host.
+To run Hardened Signal Proxy, you will need a host that has ports 80 and 443 available and a domain name that points to that host.
 
-1. Install docker and docker-compose (https://docs.docker.com/engine/install/)
-1. Ensure your current user has access to docker (`adduser $USER docker`)
-1. Clone this repository
-2. `cd ./Signal-TLS-Proxy`
-1. `docker compose build`
-1. `docker volume create --name=caddy_data`
+# Container Setup
+
+In the `sed` command below, replace `sub.my-domain.com` with the subdomain you want to host your Signal proxy at.
+
+1. Install Podman (https://podman.io/docs/installation)
+1. `git pull https://github.com/MiahaCybersec/Hardened-Signal-Proxy.git`
+1. `podman pull ghcr.io/miahacybersec/hardened-signal-proxy:nightly`
+1. `cd Hardened-Signal-Proxy`
 1. `sed -i 's/sub.example.com/sub.my-domain.com/g' config/caddy.json`
-1. `docker compose up --detach`
+1. `chmod +x ./setup-podman-autoupdates.sh`
+1. `./setup-podman-autoupdates.sh`
 
-Additionally, if you'd like to harden your server against memory corruption vulnerabilities, run the following commands. This will install [hardened_malloc](https://github.com/GrapheneOS/hardened_malloc) on your server and add it to your path automatically.
+
+
+# Hardening The Host
+
+If you'd like to harden your server against memory corruption vulnerabilities, run the following commands. This will install [hardened_malloc](https://github.com/GrapheneOS/hardened_malloc) on your server and add it to your path automatically.
 
 1. `chmod +x ./harden.sh`
 2. `./harden.sh`
 
 Your proxy is now running! You can share this with the URL `https://signal.tube/#<your_host_name>`
-
-## Updating from a previous version
-
-If you've previously run a proxy, please update to the most recent version by pulling the most recent changes from `main`, then restarting your Docker containers:
-
-```shell
-git pull
-docker compose down
-docker compose up --detach
-```
