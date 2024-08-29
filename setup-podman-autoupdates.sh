@@ -25,14 +25,12 @@ Environment=PODMAN_SYSTEMD_UNIT=%n
 Restart=on-failure
 TimeoutStopSec=70
 ExecStartPre=/bin/rm -f %t/%n.ctr-id
-ExecStart=/usr/bin/podman run --cidfile=%t/%n.ctr-id --cgroups=no-conmon --sdnotify=conmon --replace -d \
+ExecStart=/usr/bin/podman run --cidfile=%t/%n.ctr-id --cgroups=no-conmon --sdnotify=conmon --replace --rm -d \
     --name hardened-signal-proxy \
     -p 80:80 \
     -p 443:443 \
-    --restart unless-stopped \
     -v ${PWD}/config/caddy.json:/etc/caddy/caddy.json:ro,Z \
-    -v caddy_data:/data:Z \
-    -v caddy_config:/config:ro,Z \
+    -v caddy_data:/home/nonroot/.local/share:Z \
     --security-opt=apparmor=podman \
     --cap-add SETUID \
     --cap-add SETGID \
