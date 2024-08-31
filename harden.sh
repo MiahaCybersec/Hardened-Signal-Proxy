@@ -1,5 +1,12 @@
 #!/bin/bash
 
+# Check if the script is being run as root
+if [ "$EUID" -ne 0 ]; then
+    echo "This script must be run as root. Please run 'sudo ./harden.sh'."
+    exit 1
+fi
+
+# Rest of the script remains the same
 apt update \
 && apt install gcc g++ git curl make -y
 
@@ -31,5 +38,4 @@ if ! grep -q "LD_PRELOAD=\"/usr/local/lib/libhardened_malloc.so\"" ~/.bashrc; th
 fi
 
 echo 'source ~/.bashrc'
-
 echo "Hardened Malloc build and setup completed."
