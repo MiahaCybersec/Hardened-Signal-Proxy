@@ -13,7 +13,7 @@ apt update \
 # Define build variables
 # HARDENED_MALLOC_VERSION is set to the latest tag available on GitHub
 # https://github.com/GrapheneOS/hardened_malloc
-HARDENED_MALLOC_VERSION="2024082200"
+HARDENED_MALLOC_VERSION="2024083100"
 CONFIG_NATIVE=false
 VARIANT=default
 
